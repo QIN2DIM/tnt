@@ -1,10 +1,10 @@
 [project]
 name = "tnt"
 version = "0.1.0"
-description = "Add your description here"
+description = "Scans the host for proxy dependencies"
 readme = "README.md"
 authors = [
-    { name = "QIN2DIM", email = "62018067+QIN2DIM@users.noreply.github.com" }
+    { name = "QIN2DIM", email = "yaoqinse@gmail.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-hc = "tnt.cli.main:main"
+tnt = "tnt.cli.main:app"
 
 # https://packaging.python.org/en/latest/key_projects/#hatch
 # https://hatch.pypa.io/latest/config/build/#build-system
@@ -27,7 +27,7 @@ build-backend = "hatchling.build"
 
 # https://hatch.pypa.io/latest/config/build/#explicit-selection
 [tool.hatch.build.targets.sdist]
-only-include = ["src/hcaptcha_challenger"]
+only-include = ["src/tnt"]
 exclude = [
     "_archive/*.py",
     'tests/',
@@ -37,7 +37,7 @@ exclude = [
 
 # https://hatch.pypa.io/latest/config/build/#packages
 [tool.hatch.build.targets.wheel]
-packages = ["src/hcaptcha_challenger"]
+packages = ["src/tnt"]
 
 [dependency-groups]
 dev = [

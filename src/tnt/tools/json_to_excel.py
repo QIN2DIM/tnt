@@ -4,11 +4,14 @@
 
 import json
 import os
+from contextlib import suppress
 from pathlib import Path
 from typing import List, Dict, Any
 
 import pandas as pd
 from openpyxl.styles import Font
+
+from tnt.tools.constant import STORAGE_DIR, STATS_EXCEL_FILENAME
 
 
 def convert_list_to_str(value: Any) -> str:
@@ -168,7 +171,7 @@ def convert_multiple_json_to_excel(json_files: List[str], output_file: str):
     print(f"共导出 {total_services} 个服务")
 
 
-def main(storage_dir: Path = Path("stats")):
+def main(storage_dir: Path = STORAGE_DIR, filename: str = STATS_EXCEL_FILENAME):
     """主函数"""
     # 查找storage目录下的JSON文件
     if not storage_dir.exists():
@@ -180,13 +183,14 @@ def main(storage_dir: Path = Path("stats")):
         return
 
     # 生成输出文件名
-    output_file = storage_dir / "docker_compose_all_services.xlsx"
+    output_file = storage_dir / filename
 
     # 转换为Excel
     print(f"找到 {len(json_files)} 个JSON文件")
     convert_multiple_json_to_excel([str(jf) for jf in json_files], str(output_file))
 
-    os.startfile(output_file)
+    with suppress(Exception):
+        os.startfile(output_file)
 
 
 if __name__ == "__main__":

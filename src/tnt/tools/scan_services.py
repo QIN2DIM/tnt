@@ -14,10 +14,11 @@ from pydantic import BaseModel, Field
 from rich.console import Console
 from rich.progress import track
 from rich.table import Table
+from tnt.tools.constant import STORAGE_DIR
 
 console = Console()
 
-storage_dir = Path("stats")
+storage_dir = STORAGE_DIR
 
 
 class Service(BaseModel):
@@ -290,22 +291,6 @@ def main(is_to_excel: bool = False, is_visualize: bool = False):
         )
 
     save_to_json(composers, output_file=f"docker_compose_stats_{composers[0].hostname}.json")
-
-    if is_to_excel:
-        try:
-            from tnt import json_to_excel
-
-            json_to_excel.main()
-        except Exception as e:
-            console.print(e)
-
-    if is_visualize:
-        try:
-            from tnt import visualize_services
-
-            visualize_services.main(storage_dir, merge=True)
-        except Exception as e:
-            console.print(e)
 
 
 if __name__ == "__main__":

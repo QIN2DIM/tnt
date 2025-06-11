@@ -7,12 +7,15 @@
 import json
 import os
 from collections import defaultdict
+from contextlib import suppress
 from pathlib import Path
 from typing import Dict, List
 
 from pyvis.network import Network
 from rich.console import Console
 from rich.table import Table
+
+from tnt.tools.constant import STORAGE_DIR, STATS_VIS_FILENAME
 
 console = Console()
 
@@ -565,7 +568,9 @@ def load_json_files(path: Path) -> List[Dict]:
     return all_data
 
 
-def main(path_obj: Path = Path("stats"), merge: bool = True):
+def main(
+    path_obj: Path = STORAGE_DIR, merge: bool = True, merged_filename: str = STATS_VIS_FILENAME
+):
     """Docker Compose服务依赖关系可视化
 
     PATH: 输入的JSON文件或包含JSON文件的目录路径
@@ -610,7 +615,7 @@ def main(path_obj: Path = Path("stats"), merge: bool = True):
             console.print("\n")
             console.print(visualizer.generate_summary_table())
 
-        output_file = str(path_obj.joinpath("merged_service_network.html"))
+        output_file = str(path_obj.joinpath(merged_filename))
         visualizer.save_visualization(output_file)
 
         # 给出更清晰的指引
@@ -619,7 +624,8 @@ def main(path_obj: Path = Path("stats"), merge: bool = True):
         console.print(f"  • 红色连线表示服务对代理的依赖关系")
         console.print(f"  • 共享代理使用星形图标和醒目颜色标注")
         console.print(f"  • 鼠标悬停在节点上可查看详细信息")
-        os.startfile(output_file)
+        with suppress(Exception):
+            os.startfile(output_file)
     else:
         # 分离模式：每个数据源生成独立的画布
         console.print(f"[cyan]📄 分离模式：为每个数据源生成独立的画布[/cyan]")
