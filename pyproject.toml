@@ -1,5 +1,5 @@
 [project]
-name = "tnt"
+name = "tnt-py"
 version = "0.1.0"
 description = "Scans the host for proxy dependencies"
 readme = "README.md"
