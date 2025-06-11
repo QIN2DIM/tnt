@@ -1,0 +1,47 @@
+[project]
+name = "tnt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "QIN2DIM", email = "62018067+QIN2DIM@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.0",
+    "pydantic>=2.11.5",
+    "pyvis>=0.3.2",
+    "pyyaml>=6.0.2",
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+hc = "tnt.cli.main:main"
+
+# https://packaging.python.org/en/latest/key_projects/#hatch
+# https://hatch.pypa.io/latest/config/build/#build-system
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning"]
+build-backend = "hatchling.build"
+
+# https://hatch.pypa.io/latest/config/build/#explicit-selection
+[tool.hatch.build.targets.sdist]
+only-include = ["src/hcaptcha_challenger"]
+exclude = [
+    "_archive/*.py",
+    'tests/',
+    'docker/',
+    'examples/'
+]
+
+# https://hatch.pypa.io/latest/config/build/#packages
+[tool.hatch.build.targets.wheel]
+packages = ["src/hcaptcha_challenger"]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "hatchling>=1.27.0",
+    "uv-dynamic-versioning>=0.8.2",
+]
